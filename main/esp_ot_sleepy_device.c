@@ -233,7 +233,5 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_openthread_sleep_device_init());
     xTaskCreate(ot_task_worker, "ot_power_save_main", 4096, NULL, 5, NULL);
 
-    printMeshLocalEid(getInstance());
-
     return;
 }
