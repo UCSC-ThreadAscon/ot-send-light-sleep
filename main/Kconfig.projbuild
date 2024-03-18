@@ -1,0 +1,26 @@
+menu "OpenThread Receiver Light Sleep"
+
+    config OPENTHREAD_AUTO_START
+        bool 'Enable the automatic start mode.'
+        default False
+        help
+            If enabled, the Openthread Device will create or connect to thread network with pre-configured
+            network parameters automatically. Otherwise, user need to configure Thread via CLI command manually.
+
+    config TX_POWER
+      int 'Set the 802.15.4 TX power used by OpenThread'
+      range -128 127
+      default 20
+      help
+          Set the 802.15.4 transmission power (in dBm) for OpenThread.
+          The recommended TX power values are 20 dBm, 9 dBm, 0 dBm, and -25 dBm.
+
+    config POLL_PERIOD
+      int 'Set the poll period of the Sleepy End Device'
+      range 0 67108863
+      default 3000
+      help
+          The poll period (in ms) determines how often the Sleepy End Device will
+          ask to its parent router for updates on any packets it has received.
+
+endmenu
