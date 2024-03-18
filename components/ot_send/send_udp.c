@@ -28,16 +28,14 @@ void udpCreateSocket(otUdpSocket *aSocket,
   return;
 }
 
-uint32_t udpAttachPayload(otMessage *aMessage, nvs_handle_t counterHandle) {
-  uint32_t count;
-  ESP_ERROR_CHECK(nvs_get_u32(counterHandle, OT_SEND_CTR_KEY, &count));
+uint32_t udpAttachPayload(otMessage *aMessage) {
+  static uint32_t count = 0;
 
   char payload[PAYLOAD_SIZE];
   EmptyMemory(payload, PAYLOAD_SIZE);
 
   sprintf(payload, "Packet number %" PRIu32 "", count);
   count += 1;
-  ESP_ERROR_CHECK(nvs_set_u32(counterHandle, OT_SEND_CTR_KEY, count));
 
   otError error = otMessageAppend(aMessage, payload, PAYLOAD_SIZE);
   handleMessageError(aMessage, error);
@@ -49,12 +47,11 @@ void udpTransmitMessage(otInstance *aInstance,
                         uint16_t port,
                         uint16_t destPort,
                         otUdpSocket *aSocket,
-                        otMessageInfo *aMessageInfo,
-                        nvs_handle_t counterHandle)
+                        otMessageInfo *aMessageInfo)
 {
   otMessage *aMessage = otUdpNewMessage(aInstance, NULL);
 
-  uint32_t count = udpAttachPayload(aMessage, counterHandle);
+  uint32_t count = udpAttachPayload(aMessage);
   otLogNotePlat("Sent UDP packet %" PRIu32 "", count);
 
   otError error = otUdpSend(aInstance, aSocket, aMessage, aMessageInfo);
@@ -62,12 +59,11 @@ void udpTransmitMessage(otInstance *aInstance,
   return;
 }
 
-void udpSend(otInstance *aInstance,
-             uint16_t port,
-             uint16_t destPort,
-             otSockAddr *aSockName,
-             otUdpSocket *aSocket,
-             nvs_handle_t counterHandle)
+void udpSendInfinite(otInstance *aInstance,
+                     uint16_t port,
+                     uint16_t destPort,
+                     otSockAddr *aSockName,
+                     otUdpSocket *aSocket)
 {
   checkConnection(aInstance);
 
@@ -83,7 +79,11 @@ void udpSend(otInstance *aInstance,
   otIp6Address *peerAddr = &(aMessageInfo.mPeerAddr);
   handleError(otIp6AddressFromString(RECEIVER_ADDRESS, peerAddr));
 
-  udpTransmitMessage(aInstance, port, destPort, aSocket,
-                     &aMessageInfo, counterHandle);
+
+  while (true) {
+    udpTransmitMessage(aInstance, port, destPort, aSocket, &aMessageInfo);
+
+    vTaskDelay(MS_TO_TICKS(PACKET_SEND_DELAY_MS));
+  }
   return;
 }
