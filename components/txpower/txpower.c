@@ -1,4 +1,4 @@
-#include "utilities.h"
+#include "txpower.h"
 
 #include <openthread/thread.h>
 #include <openthread/platform/radio.h>

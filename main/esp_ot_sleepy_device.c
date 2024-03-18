@@ -12,7 +12,7 @@
  * CONDITIONS OF ANY KIND, either express or implied.
 */
 #include "utilities.h"
-#include "ot_receive.h"
+#include "ot_send.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -233,21 +233,7 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_openthread_sleep_device_init());
     xTaskCreate(ot_task_worker, "ot_power_save_main", 4096, NULL, 5, NULL);
 
-    otSockAddr aSockName;
-    otUdpSocket aSocket;
-    otUdpReceiver receiver;
-
-    createReceiverSocket(getInstance(), UDP_SOCK_PORT, &aSockName, &aSocket);
-    udpInitReceiver(&receiver);
-    udpCreateReceiver(getInstance(), &receiver);
-
     printMeshLocalEid(getInstance());
 
-    /**
-     * Keep the "main" thread running on an infinite loop,
-     * so the OpenThread worker thread will always be able
-     * to access the memory addresses of `aSocket` and `aSockName`.
-     */
-    while (true) { vTaskDelay(MAIN_WAIT_TIME); }
     return;
 }

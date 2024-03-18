@@ -1,3 +1,3 @@
-idf_component_register(SRCS "pollperiod.c" "txpower.c"
+idf_component_register(SRCS "txpower.c"
                     INCLUDE_DIRS "include"
                     REQUIRES "openthread")
