@@ -60,7 +60,7 @@ static void create_config_network(otInstance *instance)
     linkMode.mNetworkData = false;
 
     if (otLinkSetPollPeriod(instance, CONFIG_POLL_PERIOD) != OT_ERROR_NONE) {
-        ESP_LOGE(TAG, "Failed to set OpenThread pollperiod.");
+        ESP_LOGI(TAG, "Failed to set OpenThread pollperiod.");
         abort();
     }
     ESP_LOGE(TAG, "Poll period is currently at %" PRIu32 ".",
