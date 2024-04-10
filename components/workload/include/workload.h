@@ -73,7 +73,7 @@ void printMeshLocalEid(otInstance *aInstance);
 #define PERIODIC_URI "periodic"
 #define APERIODIC_URI "aperiodic"
 #define APERIODIC_PAYLOAD_SIZE 5
-#define PERIODIC_PAYLOAD_SIZE 216
+#define PERIODIC_PAYLOAD_SIZE 248
 #define PERIODIC_WAIT_TIME_MS CONFIG_PERIODIC_WAIT_TIME
 
 #define COAP_SERVER_PORT CONFIG_COAP_SERVER_PORT
