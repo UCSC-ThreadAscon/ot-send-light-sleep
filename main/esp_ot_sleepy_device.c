@@ -12,7 +12,7 @@
  * CONDITIONS OF ANY KIND, either express or implied.
 */
 #include "utilities.h"
-#include "ot_send.h"
+#include "workload.h"
 
 #include <stdint.h>
 #include <stdio.h>
