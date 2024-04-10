@@ -61,6 +61,7 @@ static inline void EmptyMemory(void* pointer, size_t size) {
 
 void checkConnection(otInstance *aInstance);
 void handleError(otError error, char* desc);
+void printMeshLocalEid(otInstance *aInstance);
 
 #define HandleMessageError(desc, aMessage, error)       \
   if (error != OT_ERROR_NONE) {                         \
